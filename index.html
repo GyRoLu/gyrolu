@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gyro Controller</title>
+</head>
+<body>
+    <h1>Phone Gyro Controller</h1>
+    <p>Make sure you and your PC are on the same Wi-Fi network.</p>
+    <script>
+        // Replace YOUR_PC_IP with your computer's local IP address
+        let ws = new WebSocket("ws://192.168.1.4:8081");
+
+        ws.onopen = function() {
+            console.log("Connected to WebSocket server");
+        };
+
+        // Listen for device orientation events
+        window.addEventListener("deviceorientation", function(event) {
+            let data = {
+                alpha: event.alpha,  // rotation around Z-axis
+                beta: event.beta,    // tilt front/back
+                gamma: event.gamma   // tilt left/right
+            };
+            // Send the data as a JSON string
+            ws.send(JSON.stringify(data));
+        });
+    </script>
+</body>
+</html>
